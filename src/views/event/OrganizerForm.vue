@@ -1,43 +1,35 @@
 <template>
   <div>
-    <h1>Create an event</h1>
-    <form @submit.prevent="saveEvent">
-      <label>Category</label>
+    <h1>Add Organizer's Profile</h1>
+    <form @submit.prevent="saveOrganizer">
+      <label>ID</label>
       <input
-        v-model="event.category"
+        v-model="organizer.id"
         type="text"
-        placeholder="Category"
-        class="field"
-      />
-      <h3>Name & describe your event</h3>
-
-      <label>Title</label>
-      <input
-        v-model="event.title"
-        type="text"
-        placeholder="Title"
+        placeholder="ID"
         class="field"
       />
 
-      <label>Description</label>
+      <label>Name</label>
       <input
-        v-model="event.description"
+        v-model="organizer.organizerName"
         type="text"
-        placeholder="Description"
+        placeholder="Name"
         class="field"
       />
 
-      <label>Location</label>
+      <label>Address</label>
       <input
-        v-model="event.location"
+        v-model="organizer.address"
         type="text"
-        placeholder="Location"
+        placeholder="Address"
         class="field"
       />
+
       <button type="submit">Submit</button>
     </form>
 
-    <pre>{{ event }}</pre>
+    <pre>{{ organizer }}</pre>
   </div>
 </template>
 <script>
@@ -46,25 +38,25 @@ export default {
   inject: ['GStore'],
   data() {
     return {
-      event: {
-        category: '',
-        title: '',
-        description: '',
-        location: ''
+      organizer: {
+        id: '',
+        organizerName: '',
+        address: ''
       }
     }
   },
   methods: {
-    saveEvent() {
-      EventService.saveEvent(this.event)
+    saveOrganizer() {
+      EventService.saveOrganizer(this.organizer)
         .then((res) => {
           console.log(res)
           this.$router.push({
-            name: 'EventLayoutView',
-            params: { id: res.data.id }
+            name: 'EventList'
           })
           this.GStore.flashMessage =
-            'You are successfully add a new event for ' + res.data.title
+            'You are successfully add a new event for ' +
+            res.data.organizerName +
+            "'s Profile"
           setTimeout(() => {
             this.GStore.flashMessage = ''
           }, 3000)
