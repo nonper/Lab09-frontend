@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Create an event</h1>
-    <form>
+    <form @submit.prevent="saveEvent">
       <label>Category</label>
       <input
         v-model="event.category"
@@ -33,6 +33,7 @@
   </div>
 </template>
 <script>
+import EventService from '@/services/EventService'
 export default {
   data() {
     return {
@@ -42,6 +43,21 @@ export default {
         description: '',
         location: ''
       }
+    }
+  },
+  methods: {
+    saveEvent() {
+      EventService.saveEvent(this.event)
+        .then((res) => {
+          console.log(res)
+          this.$router.push({
+            name: 'EventLayoutView',
+            params: { id: res.data.id }
+          })
+        })
+        .catch(() => {
+          this.$router.push('NetworkError')
+        })
     }
   }
 }
